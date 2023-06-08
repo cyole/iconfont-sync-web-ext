@@ -38,12 +38,14 @@ export async function getManifest() {
       'tabs',
       'storage',
       'activeTab',
+      'webRequest',
+      'webRequestBlocking',
     ],
     host_permissions: ['*://*/*'],
     content_scripts: [
       {
         matches: [
-          '<all_urls>',
+          '*://www.iconfont.cn/*',
         ],
         js: [
           'dist/contentScripts/index.global.js',

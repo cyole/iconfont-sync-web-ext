@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { storageDemo } from '~/logic/storage'
+import { uploadToken } from '~/logic/storage'
 </script>
 
 <template>
-  <main class="px-4 py-10 text-center text-gray-700 dark:text-gray-200">
-    <img src="/assets/icon.svg" class="icon-btn mx-2 text-2xl" alt="extension icon">
-    <div>Options</div>
-    <SharedSubtitle />
+  <main class="max-w-200 m-auto py-10 text-gray-700 dark:text-gray-200">
+    <div text-xl>
+      配置
+    </div>
 
-    <input v-model="storageDemo" class="border border-gray-400 rounded px-2 py-1 mt-2">
+    <div flex="~" items-center gap-2 py-4>
+      <div shrink-0 text-sm>
+        上传用token
+      </div>
+      <input v-model="uploadToken" border border-gray-400 rounded p-2 w-full>
+    </div>
 
     <div class="mt-4">
       Powered by Vite <pixelarticons-zap class="align-middle inline-block" />

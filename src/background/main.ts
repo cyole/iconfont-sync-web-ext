@@ -10,7 +10,6 @@ if (import.meta.hot) {
 }
 
 browser.runtime.onInstalled.addListener((): void => {
-  // eslint-disable-next-line no-console
   console.log('Extension installed')
 })
 
@@ -34,7 +33,6 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
     return
   }
 
-  // eslint-disable-next-line no-console
   console.log('previous tab', tab)
   sendMessage('tab-prev', { title: tab.title }, { context: 'content-script', tabId })
 })
@@ -51,4 +49,29 @@ onMessage('get-current-tab', async () => {
       title: undefined,
     }
   }
+})
+
+onMessage('send-notify', async ({ sender, data }) => {
+  const { projectName, url } = data as any
+
+  const content = `${projectName} 图标库已同步，地址：${url}`
+  const dingtalkWebhook = 'https://oapi.dingtalk.com/robot/send?access_token=70cd08844135dbc6ffa50a3f01bdd141884f6a587391b68656b960f4a29a51ce'
+  const params = {
+    msgtype: 'text',
+    text: { content },
+  }
+
+  console.log('send-notify', data)
+
+  const res = await fetch(dingtalkWebhook, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  })
+
+  const result = await res.json()
+  if (result.errcode === 0)
+    sendMessage('notify-success', { title: '发送成功' }, { context: 'content-script', tabId: sender.tabId })
 })
